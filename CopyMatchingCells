@@ -1,0 +1,32 @@
+Sub CopyMatchingCells()
+    Dim sourceSheet As Worksheet
+    Dim destinationSheet As Worksheet
+    Dim sourceRange As Range
+    Dim cell As Range
+    Dim destinationRow As Long
+    
+    ' 元のデータがあるシートと範囲を設定します
+    Set sourceSheet = ThisWorkbook.Sheets("Sheet1")
+    Set sourceRange = sourceSheet.UsedRange
+    
+    ' 対処のシートを設定します
+    Set destinationSheet = ThisWorkbook.Sheets("Sheet2")
+    
+    ' 対処のシートでの次の空行を見つけます
+    destinationRow = destinationSheet.Cells(destinationSheet.Rows.Count, 1).End(xlUp).Row + 1
+    
+    ' 元のデータの各セルをチェックし、条件に一致する場合は値をコピーします
+    For Each cell In sourceRange
+        ' ここで条件を指定します（例：A列の値が"条件"と等しい場合）
+        If cell.Column = 1 And cell.Value = "条件" Then
+            ' 対処のシートに値をコピーします（例：A列からC列までをコピー）
+            sourceSheet.Range("A" & cell.Row & ":C" & cell.Row).Copy destinationSheet.Range("A" & destinationRow)
+            
+            ' 対処のシートでの次の空行を更新します
+            destinationRow = destinationRow + 1
+        End If
+    Next cell
+    
+    ' コピーが完了したらメッセージを表示します
+    MsgBox "データのコピーが完了しました。"
+End Sub
